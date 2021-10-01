@@ -20,8 +20,9 @@ from . import views
 from Portfolio import views as Portfolio
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    re_path(r'^$', views.index, name='index'),
+    path('views/', views.index, name='index'), ##use react for index
+    re_path('views/'r'^$', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('bolos/', Portfolio.bolo_show),
+    path('',include('frontend.urls'))
 ]
