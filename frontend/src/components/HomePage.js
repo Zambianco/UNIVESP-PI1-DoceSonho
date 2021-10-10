@@ -1,18 +1,12 @@
 import React, { Component } from "react";
-import { 
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    Redirect } from "react-router-dom"
-import CreateRoomPage from "./CreateRoomPage";
-import RoomJoinPage from "./RoomJoinPage";
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import { ButtonBase, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import { InstagramIcon } from '@material-ui/icons/Instagram';
+import { WhatsAppIcon } from '@material-ui/icons/WhatsApp';
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -42,47 +36,87 @@ export default class HomePage extends Component {
             flexGrow: 1
         },
         card: {
-            maxWidth: 345
+            maxWidth: 350
+        },
+        header: {
+            'padding-left':'0px',
+            'padding-right':'0px',
+            'padding-top':'0px',
+            'padding-bottom':'8px',
+            backgroundColor: 'rgba(255, 255, 255, 0.6)'
+        },
+        header_card: {
+            backgroundColor: 'rgba(255, 255, 255, 0.05)'
+        },
+        header_child: {
+            'padding':'0px',
+            'margin':'0px'
         }
       };
      return (
-        <Router>
-            <Switch>
-                <Route exact path="/">
-                    <Grid container style={useStyles.root}  spacing={2} justify="center">
-                        <Grid item xs={10}>
-                            <Grid container justify="center" spacing={2}>
-                            {itemData.map((item) => (
-                                <Grid item>
-                                    <Card style={useStyles.card}>
-                                        <CardActionArea onClick={() => {this.showAlert(item.title)} }>
-                                            <CardMedia
-                                            component="img"
-                                            alt={item.description}
-                                            height="300"
-                                            image={item.image}
-                                            title={item.title}
-                                            />
-                                            <CardContent>
-                                            <Typography gutterBottom variant="h5" component="h2">
-                                                {item.title}
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                {item.description}
-                                            </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
-                            ))}
-                            </Grid>
-                        </Grid>
+        <div >
+        <Grid container style={useStyles.root}  spacing={2} justify="center">
+            <Grid item xs={12} style={useStyles.header}>
+                <Grid 
+                container 
+                direction="row"
+                alignItems="stretch" 
+                spacing={0}
+                >
+                    <Grid item ms={6} style={useStyles.header_child}>
+                        <Card square={true} elevation={0} style={useStyles.header_card}>  
+                            <CardMedia
+                            component="img"
+                            alt=""
+                            image="../static/images/logo.png"
+                            title=""
+                            style={useStyles.header_card}
+                            />
+                        </Card>
                     </Grid>
-                </Route>
-                <Route path="/join" component={RoomJoinPage} />
-                <Route path="/create" component={CreateRoomPage} />
-            </Switch>
-        </Router>
+                    <Grid item ms={6} style={useStyles.header_child}  >
+                        <Card square={true} elevation={0} style={useStyles.header_card}>  
+                            <CardContent style={useStyles.header_card}>
+                                <Typography gutterBottom variant="h2" component="h2">
+                                Confeitaria Doce Sonho
+                                </Typography>
+                                <Typography gutterBottom variant="h5" color="textSecondary" component="h2">
+                                Trabalhamos com chocolate e muito amor em todas as épocas do ano!
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={10}>
+                <Grid container justify="center" spacing={2}>
+                {itemData.map((item) => (
+                    <Grid item>
+                        <Card style={useStyles.card}>
+                            <CardActionArea onClick={() => {this.showAlert(item.title)} }>
+                                <CardMedia
+                                component="img"
+                                alt={item.description}
+                                height="300"
+                                image={item.image}
+                                title={item.title}
+                                />
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {item.title}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        {item.description}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                ))}
+                </Grid>
+            </Grid>
+        </Grid>
+        </div>
      );
   }
 }
