@@ -5,8 +5,14 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from "@material-ui/core";
-import { InstagramIcon } from '@material-ui/icons/Instagram';
-import { WhatsAppIcon } from '@material-ui/icons/WhatsApp';
+import { createTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { green, purple,pink } from '@material-ui/core/colors';
+import Instagram from '@material-ui/icons/Instagram';
+import Button from '@material-ui/core/Button'
+import WhatsApp from '@material-ui/icons/WhatsApp';
+import Email from '@material-ui/icons/Email'
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -18,6 +24,36 @@ export default class HomePage extends Component {
   }
 
   render() {
+
+    let InstagramColorButton = withStyles((theme) => ({
+        root: {
+          color: '#FFFFFF',
+          backgroundColor: '#E4405F',
+          '&:hover': {
+            backgroundColor: pink[300],
+          },
+        },
+      }))(Button);
+
+      let EmailColorButton = withStyles((theme) => ({
+        root: {
+            color: theme.palette.getContrastText(purple[500]),
+            backgroundColor: purple[500],
+            '&:hover': {
+              backgroundColor: purple[700],
+            },
+        },
+      }))(Button);
+    
+    let WhatsAppColorButton = withStyles((theme) => ({
+        root: {
+          color: '#FFFFFF',
+          backgroundColor: '#25D366',
+          '&:hover': {
+            backgroundColor: green[300],
+          },
+        },
+      }))(Button);
 
     let itemData = [
         {"id":1, "title":"Bola de Basquete", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/basketball_cake.jpeg", "type":"cake"},
@@ -60,7 +96,7 @@ export default class HomePage extends Component {
                 <Grid 
                 container 
                 direction="row"
-                alignItems="stretch" 
+                alignItems="center" 
                 spacing={0}
                 >
                     <Grid item ms={6} style={useStyles.header_child}>
@@ -83,7 +119,31 @@ export default class HomePage extends Component {
                                 <Typography gutterBottom variant="h5" color="textSecondary" component="h2">
                                 Trabalhamos com chocolate e muito amor em todas as épocas do ano!
                                 </Typography>
+                                
+                                    <InstagramColorButton
+                                        variant="outlined"
+                                        color="primary"
+                                        startIcon={<Instagram />}
+                                    >
+                                        Instagram
+                                    </InstagramColorButton>
+                                    <EmailColorButton
+                                        variant="outlined"
+                                        color="primary"
+                                        startIcon={<Email />}
+                                    >
+                                       Email
+                                    </EmailColorButton>
+                                    <WhatsAppColorButton
+                                        variant="outlined"
+                                        color="primary"
+                                        startIcon={<WhatsApp />}
+                                    >
+                                        WhatsApp
+                                    </WhatsAppColorButton>
+                                
                             </CardContent>
+                            
                         </Card>
                     </Grid>
                 </Grid>
