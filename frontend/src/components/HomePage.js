@@ -23,6 +23,18 @@ export default class HomePage extends Component {
     alert(description);
   }
 
+  goToAnotherUrl(url){
+    window.open(url, '_blank').focus();
+  }
+
+  goToWhatsApp(){
+    this.goToAnotherUrl("https://wa.me/11985935897");
+  }
+
+  goToInstagram(){
+    this.goToAnotherUrl("https://www.instagram.com/confeitariadocesonho2106/");
+  }
+
   render() {
 
     let InstagramColorButton = withStyles((theme) => ({
@@ -111,7 +123,7 @@ export default class HomePage extends Component {
                         </Card>
                     </Grid>
                     <Grid item ms={6} style={useStyles.header_child}  >
-                        <Card square={true} elevation={0} style={useStyles.header_card}>  
+                        <Card square={true} elevation={0} style={useStyles.header_card} >  
                             <CardContent style={useStyles.header_card}>
                                 <Typography gutterBottom variant="h2" component="h2">
                                 Confeitaria Doce Sonho
@@ -119,14 +131,23 @@ export default class HomePage extends Component {
                                 <Typography gutterBottom variant="h5" color="textSecondary" component="h2">
                                 Trabalhamos com chocolate e muito amor em todas as épocas do ano!
                                 </Typography>
-                                
+                                <Grid
+                                container
+                                direction="row"
+                                justifyContent="flex-start"
+                                alignItems="center"
+                                spacing={2}>
+                                    <Grid item>
                                     <InstagramColorButton
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<Instagram />}
+                                        onClick={() => this.goToInstagram()}
                                     >
                                         Instagram
                                     </InstagramColorButton>
+                                    </Grid>
+                                    <Grid item>
                                     <EmailColorButton
                                         variant="outlined"
                                         color="primary"
@@ -134,14 +155,18 @@ export default class HomePage extends Component {
                                     >
                                        Email
                                     </EmailColorButton>
+                                    </Grid>
+                                    <Grid item>
                                     <WhatsAppColorButton
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<WhatsApp />}
+                                        onClick={() => {this.goToWhatsApp()}}
                                     >
                                         WhatsApp
                                     </WhatsAppColorButton>
-                                
+                                    </Grid>
+                                </Grid>
                             </CardContent>
                             
                         </Card>
