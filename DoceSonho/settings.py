@@ -122,7 +122,8 @@ USE_TZ = True
 ROOT_PATH = os.path.dirname(__file__)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-UPLOAD_PATH = os.path.join(BASE_DIR, 'frontend/static/upload')
+MEDIA_ROOT = os.path.join(BASE_DIR , 'frontend/static')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
