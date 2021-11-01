@@ -6,7 +6,8 @@ class Bolo(models.Model):
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
     ingredientes = models.TextField()
-    foto = models.FileField(blank=True, upload_to='upload')
+    foto = models.ImageField(blank=True, upload_to='upload/')
+    #foto = models.FileField(blank=True, upload_to='upload/')
 
     def publish(self):
         self.save()
@@ -20,7 +21,8 @@ class Doce(models.Model):
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
     ingredientes = models.TextField()
-    foto = models.FileField(blank=True, upload_to='upload')
+    foto = models.ImageField(blank=True, upload_to='upload/')
+    #foto = models.FileField(blank=True, upload_to='upload/')
 
     def publish(self):
         self.save()
