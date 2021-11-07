@@ -18,11 +18,16 @@ from django.urls import path, include
 from django.urls import re_path
 from . import views
 from Portfolio import views as Portfolio
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('views/', views.index, name='index'), ##use react for index
     re_path('views/'r'^$', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('listBolo/', Portfolio.listBolo),
     path('bolos/', Portfolio.bolo_show),
-    path('',include('frontend.urls'))
+    path('',include('frontend.urls')),
+    
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

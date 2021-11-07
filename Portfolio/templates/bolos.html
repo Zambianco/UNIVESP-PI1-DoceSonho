@@ -11,18 +11,16 @@
 	<div class="page-header">
 		<h1>BOLOS</h1>
 	</div>
-        <div>	
-		{% for bolo in bolos %}
-			<div class="card" id=card>
-				<button type="button" class="collapsible">{{ bolo.titulo }}</button>
-					<div class="content">	
-						<p>{{ bolo.descricao }}</p>
-						<p>{{ bolo.ingredientes }}</p>
-
-					</div>
-
-			</div>	
-		{% endfor %}
+    <div>
+        {% for bolo in bolos %}
+            <h2>{{ bolo.titulo }}</h2>
+            <hr>
+            <p>{{ bolo.descricao }}</p>
+            <p>{{ bolo.ingredientes }}</p>
+            <hr>
+            <img src={% get_media_prefix %}{{ bolo.foto }} alt="Minha Figura">
+            
+        {% endfor %}   
 	</div>
     </body>
 
