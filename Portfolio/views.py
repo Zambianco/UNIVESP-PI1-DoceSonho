@@ -6,6 +6,9 @@ def listBolo(request):
     data = list(Bolo.objects.values())
     return JsonResponse(data, safe=False)
 
+def listDoce(request):
+    data = list(Doce.objects.values())
+    return JsonResponse(data, safe=False)
 
 def bolo_show(request):
     bolos = Bolo.objects.all()

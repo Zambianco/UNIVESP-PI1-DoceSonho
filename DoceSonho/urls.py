@@ -26,6 +26,7 @@ urlpatterns = [
     re_path('views/'r'^$', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('listBolo/', Portfolio.listBolo),
+    path('listDoce/', Portfolio.listDoce),
     path('bolos/', Portfolio.bolo_show),
     path('',include('frontend.urls')),
     
