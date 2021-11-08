@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from .models import Bolo, Doce
+from .models import Bolo, Doce, Quitute
 from django.http import JsonResponse
+
+def listQuitute(request):
+    data = list(Quitute.objects.values())
+    return JsonResponse(data, safe=False)
 
 def listBolo(request):
     data = list(Bolo.objects.values())
