@@ -11,16 +11,71 @@ import Instagram from '@material-ui/icons/Instagram';
 import Button from '@material-ui/core/Button'
 import WhatsApp from '@material-ui/icons/WhatsApp';
 import Email from '@material-ui/icons/Email'
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Box from '@material-ui/core/Box';
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+  
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
+    console.log("passou por aqui")
+    this.state = {
+        listBolo: []
+    }
+    this.getListBolo()
   }
+
+  
 
   showAlert(description) {
     alert(description);
+  }
+
+  getListBolo(){
+      console.log("fez getListBolo")
+      fetch('/listBolo').then((response) =>
+        response.json()
+       ).then((data) => {
+           this.setState({
+                listBolo: data 
+           })
+       })
   }
 
   goToAnotherUrl(url){
@@ -28,7 +83,7 @@ export default class HomePage extends Component {
   }
 
   goToWhatsApp(){
-    this.goToAnotherUrl("https://wa.me/11985935897");
+    this.goToAnotherUrl("https://api.whatsapp.com/send?phone=5511985935897&text=Estou%20contatando%20pelo%20site%20para%20saber%20mais%20sobre...");
   }
 
   goToInstagram(){
@@ -36,6 +91,11 @@ export default class HomePage extends Component {
   }
 
   render() {
+    // const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
     let InstagramColorButton = withStyles((theme) => ({
         root: {
@@ -67,18 +127,25 @@ export default class HomePage extends Component {
         },
       }))(Button);
 
-    let itemData = [
-        {"id":1, "title":"Bola de Basquete", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/basketball_cake.jpeg", "type":"cake"},
-        {"id":2, "title":"Melhor Pai", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/best_father_decorated_cake.jpeg", "type":"cake"},
-        {"id":3, "title":"Ovo de Páscoa", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/easter_egg_cake.jpeg", "type":"cake"},
-        {"id":4, "title":"Fiona do Sherek", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/fiona_from_shrek_cake.jpeg", "type":"cake"},
-        {"id":5, "title":"Flores", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/flower_decorated_cake.jpeg", "type":"cake"},
-        {"id":6, "title":"Taça Feliz", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/happy_glass.jfif", "type":"cake"},
-        {"id":7, "title":"Vulcão", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/homemade_volcano_cake_inside.jpeg", "type":"cake"},
-        {"id":8, "title":"Vulcão", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/homemade_volcano_cake.jpeg", "type":"cake"},
-        {"id":9, "title":"Decorado Rosa", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/pink_decorated_cake.jpeg", "type":"cake"},
-        {"id":10, "title":"Girassol", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/sunflower_cake.jpg", "type":"cake"}
-    ];
+    // let itemData = [
+    //     {"id":1, "title":"Bola de Basquete", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/basketball_cake.jpeg", "type":"cake"},
+    //     {"id":2, "title":"Melhor Pai", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/best_father_decorated_cake.jpeg", "type":"cake"},
+    //     {"id":3, "title":"Ovo de Páscoa", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/easter_egg_cake.jpeg", "type":"cake"},
+    //     {"id":4, "title":"Fiona do Sherek", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/fiona_from_shrek_cake.jpeg", "type":"cake"},
+    //     {"id":5, "title":"Flores", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/flower_decorated_cake.jpeg", "type":"cake"},
+    //     {"id":6, "title":"Taça Feliz", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/happy_glass.jfif", "type":"cake"},
+    //     {"id":7, "title":"Vulcão", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/homemade_volcano_cake_inside.jpeg", "type":"cake"},
+    //     {"id":8, "title":"Vulcão", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/homemade_volcano_cake.jpeg", "type":"cake"},
+    //     {"id":9, "title":"Decorado Rosa", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/pink_decorated_cake.jpeg", "type":"cake"},
+    //     {"id":10, "title":"Girassol", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/sunflower_cake.jpg", "type":"cake"}
+    // ];
+
+    let itemData = this.state.listBolo.map((item) => ( {
+        title:item.titulo,
+        description:item.descricao,
+        image:item.foto
+    } ))
+
     var useStyles = {
         root :{
             flexGrow: 1
@@ -148,13 +215,14 @@ export default class HomePage extends Component {
                                     </InstagramColorButton>
                                     </Grid>
                                     <Grid item>
-                                    <EmailColorButton
+                                    {/* TODO - Implement facebook button when the link be ready
+                                     <EmailColorButton
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<Email />}
                                     >
                                        Email
-                                    </EmailColorButton>
+                                    </EmailColorButton> */}
                                     </Grid>
                                     <Grid item>
                                     <WhatsAppColorButton
@@ -174,8 +242,16 @@ export default class HomePage extends Component {
                 </Grid>
             </Grid>
             <Grid item xs={10}>
+                <AppBar position="static">
+                    <Tabs  aria-label="simple tabs example" centered>
+                        <Tab label="Bolos"  />
+                        <Tab label="Doces"  />
+                    </Tabs>
+                </AppBar>
+            </Grid>
+            <Grid item xs={10}>
                 <Grid container justify="center" spacing={2}>
-                {itemData.map((item) => (
+                { itemData.map((item) => (
                     <Grid item>
                         <Card style={useStyles.card}>
                             <CardActionArea onClick={() => {this.showAlert(item.title)} }>
@@ -183,7 +259,7 @@ export default class HomePage extends Component {
                                 component="img"
                                 alt={item.description}
                                 height="300"
-                                image={item.image}
+                                image={"../static/" + item.image}
                                 title={item.title}
                                 />
                                 <CardContent>
