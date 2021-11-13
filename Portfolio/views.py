@@ -5,7 +5,13 @@ from .models import Bolo, Doce, Quitute
 from django.http import JsonResponse
 
 def listQuitute(request):
-    data = list(Quitute.objects.values())
+    categoria = request.GET['category']
+
+    data = []
+    if categoria:
+        data = list(Quitute.objects.filter(categoria__id__in=categoria.split(',')).values())
+    else:
+        data = list(Quitute.objects.values())
     return JsonResponse(data, safe=False)
 
 def listBolo(request):

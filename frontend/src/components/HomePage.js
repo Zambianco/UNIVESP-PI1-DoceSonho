@@ -89,15 +89,26 @@ class HomePage extends Component {
       newChecked.splice(currentIndex, 1);
     }
 
+    if(newChecked.length > 1 || (newChecked.length == 1 && newChecked[0].id != -1)) {
+      this.loadQuitute(newChecked.map((item) => item.id).join())
+    } else {
+      newChecked = []
+      this.loadQuitute()
+    }
+
     this.setState({
       checked: newChecked
-    }) 
+    });
+
+    this.setState({
+      dialogOpen: false
+    });
   };
 
-  async loadQuitute (category = "")  {
-    var uri = '/listQuitute'
+  async loadQuitute(category = ""){
+    var uri = '/listQuitute?category='
     if(category){
-      //se houver parametros do another thing here
+      uri = uri + category
     }
     fetch(uri)
     .then((response) =>
