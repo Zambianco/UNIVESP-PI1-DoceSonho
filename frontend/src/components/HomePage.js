@@ -5,99 +5,175 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from "@material-ui/core";
-import { createTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, purple,pink } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core/styles';
+import { green, pink } from '@material-ui/core/colors';
 import Instagram from '@material-ui/icons/Instagram';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button'
 import WhatsApp from '@material-ui/icons/WhatsApp';
-import Email from '@material-ui/icons/Email'
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Box from '@material-ui/core/Box';
+import Checkbox from "@material-ui/core/Checkbox";
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box p={3}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
+const useStyles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  card: {
+    maxWidth: 350
+  },
+  header: {
+      padding: '0 0 8px 0 !important',
+      backgroundColor: 'rgba(255, 255, 255, 0.6)'
+  },
+  header_card: {
+      backgroundColor: 'rgba(255, 255, 255, 0.05)'
+  },
+  header_child: {
+      padding:'0px',
+      margin:'0px'
+  },
+  filter_container: {
+    marginTop:'8px',
+    marginBottom:'8px'
+  },
+  categories_button: {
+    justifyContent:'center',
+    display:'flex'
   }
-  
-  TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired,
+});
+
+class HomePage extends Component {
+
+  state = {
+    searchNodes: "",
+    listBolo: [],
+    listCategory: [],
+    checked: [],
+    dialogOpen: false
   };
-  
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
-  
 
-export default class HomePage extends Component {
   constructor(props) {
+    debugger;
     super(props);
-    console.log("passou por aqui")
-    this.state = {
-        listBolo: []
-    }
-    this.getListBolo()
+
+    this.loadQuitute()
+    this.loadCategory()
+    
   }
 
-  
+  handleToggle(value) {
+    const currentIndex = this.state.checked.indexOf(value);
+    let newChecked = [...this.state.checked];
+    
+    if(value.id == -1) {
+      if (currentIndex === -1) {
+        newChecked = this.state.listCategory
+      } else {
+        newChecked = []
+      }
+    }
+    else if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
 
-  showAlert(description) {
+    this.setState({
+      checked: newChecked
+    }) 
+  };
+
+  async loadQuitute (category = "")  {
+    var uri = '/listQuitute'
+    if(category){
+      //se houver parametros do another thing here
+    }
+    fetch(uri)
+    .then((response) =>
+          response.json()
+    ).then((data) => {
+      this.setState({
+        listBolo: data.map(
+          (item) => ( {
+            title:item.titulo,
+            description:item.descricao,
+            image:item.foto
+          } )
+        )
+      })
+    });
+  }
+  
+  async loadCategory() {
+    fetch('/listCategoria')
+    .then((response) =>
+          response.json()
+    ).then((data) => {
+      this.setState({
+        listCategory: [
+          {
+            id:-1,
+            description:"Todos",
+          } 
+        ].concat(
+          data.map(
+            (item) => ( {
+              id:item.id,
+              description:item.nomeCategoria,
+            } )
+          )
+        )
+      })
+      
+    }); 
+  }
+           
+  
+  showAlert = (description) => {
     alert(description);
   }
 
-  getListBolo(){
-      console.log("fez getListBolo")
-      fetch('/listBolo').then((response) =>
-        response.json()
-       ).then((data) => {
-           this.setState({
-                listBolo: data 
-           })
-       })
-  }
+  
 
-  goToAnotherUrl(url){
+  goToAnotherUrl = (url) => {
     window.open(url, '_blank').focus();
   }
 
-  goToWhatsApp(){
-    this.goToAnotherUrl("https://api.whatsapp.com/send?phone=5511985935897&text=Estou%20contatando%20pelo%20site%20para%20saber%20mais%20sobre...");
+  goToWhatsApp = () => {
+    goToAnotherUrl("https://api.whatsapp.com/send?phone=5511985935897&text=Estou%20contatando%20pelo%20site%20para%20saber%20mais%20sobre...");
   }
 
-  goToInstagram(){
-    this.goToAnotherUrl("https://www.instagram.com/confeitariadocesonho2106/");
+  goToInstagram = () => {
+    goToAnotherUrl("https://www.instagram.com/confeitariadocesonho2106/");
   }
 
-  render() {
-    // const [value, setValue] = React.useState(0);
+  dialogOpen = () => {
+    this.setState({
+      dialogOpen: true
+    });
+  }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+  dialogHandleClose = () => {
+    this.setState({
+      dialogOpen: false
+    });
 
-    let InstagramColorButton = withStyles((theme) => ({
+  } 
+
+    render() {
+      const { classes } = this.props;
+      let InstagramColorButton = withStyles((theme) => ({
         root: {
           color: '#FFFFFF',
           backgroundColor: '#E4405F',
@@ -106,17 +182,7 @@ export default class HomePage extends Component {
           },
         },
       }))(Button);
-
-      let EmailColorButton = withStyles((theme) => ({
-        root: {
-            color: theme.palette.getContrastText(purple[500]),
-            backgroundColor: purple[500],
-            '&:hover': {
-              backgroundColor: purple[700],
-            },
-        },
-      }))(Button);
-    
+      
     let WhatsAppColorButton = withStyles((theme) => ({
         root: {
           color: '#FFFFFF',
@@ -127,71 +193,30 @@ export default class HomePage extends Component {
         },
       }))(Button);
 
-    // let itemData = [
-    //     {"id":1, "title":"Bola de Basquete", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/basketball_cake.jpeg", "type":"cake"},
-    //     {"id":2, "title":"Melhor Pai", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/best_father_decorated_cake.jpeg", "type":"cake"},
-    //     {"id":3, "title":"Ovo de Páscoa", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/easter_egg_cake.jpeg", "type":"cake"},
-    //     {"id":4, "title":"Fiona do Sherek", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/fiona_from_shrek_cake.jpeg", "type":"cake"},
-    //     {"id":5, "title":"Flores", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/flower_decorated_cake.jpeg", "type":"cake"},
-    //     {"id":6, "title":"Taça Feliz", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/happy_glass.jfif", "type":"cake"},
-    //     {"id":7, "title":"Vulcão", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/homemade_volcano_cake_inside.jpeg", "type":"cake"},
-    //     {"id":8, "title":"Vulcão", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/homemade_volcano_cake.jpeg", "type":"cake"},
-    //     {"id":9, "title":"Decorado Rosa", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/pink_decorated_cake.jpeg", "type":"cake"},
-    //     {"id":10, "title":"Girassol", "description":"Bolo bola de basquete. Massa branca amanteigada com recheio de delícia de ninho e morangos.", "image":"../static/images/sunflower_cake.jpg", "type":"cake"}
-    // ];
-
-    let itemData = this.state.listBolo.map((item) => ( {
-        title:item.titulo,
-        description:item.descricao,
-        image:item.foto
-    } ))
-
-    var useStyles = {
-        root :{
-            flexGrow: 1
-        },
-        card: {
-            maxWidth: 350
-        },
-        header: {
-            'padding-left':'0px',
-            'padding-right':'0px',
-            'padding-top':'0px',
-            'padding-bottom':'8px',
-            backgroundColor: 'rgba(255, 255, 255, 0.6)'
-        },
-        header_card: {
-            backgroundColor: 'rgba(255, 255, 255, 0.05)'
-        },
-        header_child: {
-            'padding':'0px',
-            'margin':'0px'
-        }
-      };
      return (
         <div >
-        <Grid container style={useStyles.root}  spacing={2} justify="center">
-            <Grid item xs={12} style={useStyles.header}>
+        <Grid container className={classes.root}  spacing={2} justify="center">
+            <Grid item xs={12} className={classes.header}>
                 <Grid 
                 container 
                 direction="row"
                 alignItems="center" 
                 spacing={0}
                 >
-                    <Grid item ms={6} style={useStyles.header_child}>
-                        <Card square={true} elevation={0} style={useStyles.header_card}>  
+                    <Grid item ms={6} className={classes.header_child}>
+                        <Card square={true} elevation={0} className={classes.header_card}>  
                             <CardMedia
                             component="img"
                             alt=""
                             image="../static/images/logo.png"
                             title=""
-                            style={useStyles.header_card}
+                            className={classes.header_card}
                             />
                         </Card>
                     </Grid>
-                    <Grid item ms={6} style={useStyles.header_child}  >
-                        <Card square={true} elevation={0} style={useStyles.header_card} >  
-                            <CardContent style={useStyles.header_card}>
+                    <Grid item ms={6} className={classes.header_child}  >
+                        <Card square={true} elevation={0} className={classes.header_card} >  
+                            <CardContent className={classes.header_card}>
                                 <Typography gutterBottom variant="h2" component="h2">
                                 Confeitaria Doce Sonho
                                 </Typography>
@@ -209,27 +234,19 @@ export default class HomePage extends Component {
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<Instagram />}
-                                        onClick={() => this.goToInstagram()}
+                                        onClick={() => goToInstagram()}
                                     >
                                         Instagram
                                     </InstagramColorButton>
                                     </Grid>
                                     <Grid item>
-                                    {/* TODO - Implement facebook button when the link be ready
-                                     <EmailColorButton
-                                        variant="outlined"
-                                        color="primary"
-                                        startIcon={<Email />}
-                                    >
-                                       Email
-                                    </EmailColorButton> */}
                                     </Grid>
                                     <Grid item>
                                     <WhatsAppColorButton
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<WhatsApp />}
-                                        onClick={() => {this.goToWhatsApp()}}
+                                        onClick={() => goToWhatsApp()}
                                     >
                                         WhatsApp
                                     </WhatsAppColorButton>
@@ -241,20 +258,37 @@ export default class HomePage extends Component {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={10}>
-                <AppBar position="static">
-                    <Tabs  aria-label="simple tabs example" centered>
-                        <Tab label="Bolos"  />
-                        <Tab label="Doces"  />
-                    </Tabs>
-                </AppBar>
+            <Grid item xs={10} className={classes.filter_container}>
+              <Button variant="contained" color="primary" startIcon={<FilterListIcon />} onClick={() => this.dialogOpen()}>
+                Filtrar
+              </Button>
+              <Dialog onClose={() => this.dialogHandleClose()} aria-labelledby="simple-dialog-title" open={this.state.dialogOpen}>
+                <DialogTitle id="simple-dialog-title">Filtros</DialogTitle>
+                <List>
+                { this.state.listCategory.map((item) => (
+                  <ListItem key={item} role={undefined} dense button onClick={() => this.handleToggle(item)}>
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        tabIndex={-1}
+                        checked={this.state.checked.indexOf(item) !== -1}
+                        disableRipple
+                        inputProps={{ 'aria-labelledby': `checkbox-list-label-${item.id}` }}
+                      />
+                      {/*  */}
+                    </ListItemIcon>
+                    <ListItemText id={item.id} primary={item.description} />
+                  </ListItem>
+                ))}
+                </List>
+              </Dialog>
             </Grid>
             <Grid item xs={10}>
                 <Grid container justify="center" spacing={2}>
-                { itemData.map((item) => (
+                { this.state.listBolo.map((item) => (
                     <Grid item>
-                        <Card style={useStyles.card}>
-                            <CardActionArea onClick={() => {this.showAlert(item.title)} }>
+                        <Card className={classes.card}>
+                            <CardActionArea onClick={() => showAlert(item.title) }>
                                 <CardMedia
                                 component="img"
                                 alt={item.description}
@@ -279,5 +313,8 @@ export default class HomePage extends Component {
         </Grid>
         </div>
      );
-  }
+    }
+  
 }
+
+export default withStyles(useStyles, { withTheme: true })(HomePage);

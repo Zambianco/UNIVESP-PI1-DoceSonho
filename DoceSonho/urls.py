@@ -29,6 +29,7 @@ urlpatterns = [
     path('listDoce/', Portfolio.listDoce),
     path('bolos/', Portfolio.bolo_show),
     path('listQuitute/', Portfolio.listQuitute),
+    path('listCategoria/', Portfolio.listCategoria),
     path('',include('frontend.urls')),
     
 ]

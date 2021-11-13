@@ -7,8 +7,6 @@ import {
   Link,
   Redirect } from "react-router-dom"
 import HomePage from "./HomePage";
-import RoomJoinPage from "./RoomJoinPage";
-import CreateRoomPage from "./CreateRoomPage";
 
 export default class App extends Component {
   constructor(props) {
@@ -22,8 +20,6 @@ export default class App extends Component {
         <Router>
             <Switch>
                 <Route exact path="/" component={HomePage}/>
-                <Route path="/join" component={RoomJoinPage} />
-                <Route path="/create" component={CreateRoomPage} />
             </Switch>
         </Router>
       </div>
