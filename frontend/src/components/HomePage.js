@@ -162,11 +162,11 @@ class HomePage extends Component {
   }
 
   goToWhatsApp = () => {
-    goToAnotherUrl("https://api.whatsapp.com/send?phone=5511985935897&text=Estou%20contatando%20pelo%20site%20para%20saber%20mais%20sobre...");
+    this.goToAnotherUrl("https://api.whatsapp.com/send?phone=5511985935897&text=Estou%20contatando%20pelo%20site%20para%20saber%20mais%20sobre...");
   }
 
   goToInstagram = () => {
-    goToAnotherUrl("https://www.instagram.com/confeitariadocesonho2106/");
+    this.goToAnotherUrl("https://www.instagram.com/confeitariadocesonho2106/");
   }
 
   dialogOpen = () => {
@@ -245,7 +245,7 @@ class HomePage extends Component {
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<Instagram />}
-                                        onClick={() => goToInstagram()}
+                                        onClick={() => this.goToInstagram()}
                                     >
                                         Instagram
                                     </InstagramColorButton>
@@ -257,7 +257,7 @@ class HomePage extends Component {
                                         variant="outlined"
                                         color="primary"
                                         startIcon={<WhatsApp />}
-                                        onClick={() => goToWhatsApp()}
+                                        onClick={() => this.goToWhatsApp()}
                                     >
                                         WhatsApp
                                     </WhatsAppColorButton>
